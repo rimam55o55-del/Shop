@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروشگاه لوازم آپاراتی</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background: #f5f7fa; margin: 0; padding: 0; color: #333; }
+        .navbar { background: #2c3e50; color: white; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .welcome-text { text-align: center; margin-bottom: 30px; font-size: 18px; color: #555; font-weight: bold; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; justify-content: center; }
+        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; text-align: center; padding: 20px; transition: 0.3s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .product-icon { font-size: 50px; margin-bottom: 15px; color: #34495e; }
+        .product-title { font-size: 19px; font-weight: bold; margin-bottom: 20px; color: #111; }
+        .buy-btn { background: #ff9800; color: white; border: none; padding: 12px 20px; font-size: 15px; font-weight: bold; cursor: pointer; border-radius: 25px; width: 100%; transition: 0.2s; }
+        .buy-btn:hover { background: #e65100; }
+        .footer { text-align: center; padding: 20px; color: #888; font-size: 14px; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    ⚙️ فروشگاه تخصصی لوازم و ملزومات آپاراتی
+</div>
+
+<div class="container">
+    <div class="welcome-text">
+        جهت استعلام قیمت و ثبت سفارش هر یک از اقلام زیر، روی دکمه سفارش در واتساپ کلیک کنید.
+    </div>
+
+    <div class="products-grid">
+        <div class="product-card">
+            <div class="product-icon">🧵</div>
+            <div class="product-title">نخ پنچرگیری</div>
+            <button class="buy-btn" onclick="sendOrder('نخ پنچرگیری')">استعلام قیمت و سفارش</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-icon">🎈</div>
+            <div class="product-title">والو (والف)</div>
+            <button class="buy-btn" onclick="sendOrder('والو (والف)')">استعلام قیمت و سفارش</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-icon">⚖️</div>
+            <div class="product-title">سرب بالانس</div>
+            <button class="buy-btn" onclick="sendOrder('سرب بالانس')">استعلام قیمت و سفارش</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-icon">🏷️</div>
+            <div class="product-title">سرب چسبی</div>
+            <button class="buy-btn" onclick="sendOrder('سرب چسبی')">استعلام قیمت و سفارش</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-icon">🧪</div>
+            <div class="product-title">سیروپ (چسب آپارات)</div>
+            <button class="buy-btn" onclick="sendOrder('سیروپ (چسب آپارات)')">استعلام قیمت و سفارش</button>
+        </div>
+
+        <div class="product-card">
+            <div class="product-icon">🔄</div>
+            <div class="product-title">تیپ تیوب و رادیال زرین</div>
+            <button class="buy-btn" onclick="sendOrder('تیپ تیوب و رادیال زرین')">استعلام قیمت و سفارش</button>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    © تمامی حقوق برای این فروشگاه محفوظ است.
+</div>
+
+<script>
+    function sendOrder(name) {
+        let phone = "989191833690"; 
+        let text = `سلام، وقت بخیر.\n\nمایل به استعلام قیمت و خرید این محصول هستم:\n📦 محصول: ${name}\n\nلطفاً قیمت و شرایط ارسال را بفرمایید.`;
+        let url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank');
+    }
+</script>
+
+</body>
+</html>
+
