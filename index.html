@@ -1,11 +1,46 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>فروشگاه من</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a1a2e">
 </head>
-<body style="text-align:center;font-family:tahoma">
-<h1>به فروشگاه من خوش آمدید</h1>
-<p>اولین سایت من با GitHub Pages</p>
+<body>
+
+<header class="header">
+  <h1 class="logo">فروشگاه من</h1>
+  <button id="cartBtn" class="cart-btn">🛒 سبد خرید (<span id="cartCount">0</span>)</button>
+</header>
+
+<section class="hero">
+  <h2>جدیدترین محصولات با بهترین قیمت</h2>
+  <p>ارسال سریع به سراسر کشور</p>
+</section>
+
+<section class="products" id="products"></section>
+
+<div id="cartModal" class="cart-modal hidden">
+  <div class="cart-box">
+    <h3>سبد خرید</h3>
+    <div id="cartItems"></div>
+    <div class="cart-total">جمع کل: <span id="cartTotal">0</span> تومان</div>
+    <button class="checkout-btn">ثبت سفارش</button>
+    <button id="closeCart" class="close-btn">بستن</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>© ۱۴۰۴ فروشگاه من - تمامی حقوق محفوظ است</p>
+</footer>
+
+<script src="script.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
 </body>
 </html>
