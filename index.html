@@ -2,45 +2,104 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فروشگاه من</title>
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>بازارچه — فروشگاه آنلاین همه‌چیز</title>
+<meta name="description" content="فروشگاه آنلاین بازارچه؛ خرید آسان از دسته‌های مختلف در یک‌جا.">
+<meta name="theme-color" content="#14213D">
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1a1a2e">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header class="header">
-  <h1 class="logo">فروشگاه من</h1>
-  <button id="cartBtn" class="cart-btn">🛒 سبد خرید (<span id="cartCount">0</span>)</button>
+<header class="site-header">
+  <div class="header-inner">
+    <button class="icon-btn" id="menuBtn" aria-label="دسته‌بندی‌ها">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="brand">بازار<span>چه</span></div>
+    <button class="icon-btn cart-btn" id="cartBtn" aria-label="سبد خرید">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 8H6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1.4" fill="currentColor"/><circle cx="17" cy="20" r="1.4" fill="currentColor"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+  <div class="search-row">
+    <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/><path d="M21 21l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="searchInput" type="text" placeholder="دنبال چی می‌گردی؟">
+  </div>
 </header>
 
-<section class="hero">
-  <h2>جدیدترین محصولات با بهترین قیمت</h2>
-  <p>ارسال سریع به سراسر کشور</p>
-</section>
+<nav class="cat-chips" id="catChips">
+  <button class="chip active" data-cat="all">همه</button>
+  <button class="chip" data-cat="fashion">پوشاک</button>
+  <button class="chip" data-cat="digital">دیجیتال</button>
+  <button class="chip" data-cat="home">خانه</button>
+  <button class="chip" data-cat="beauty">زیبایی</button>
+  <button class="chip" data-cat="sport">ورزش</button>
+  <button class="chip" data-cat="food">خوراکی</button>
+</nav>
 
-<section class="products" id="products"></section>
+<main>
+  <section class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">فروشگاه یک‌جا</p>
+      <h1>هرچی لازم داری، همین‌جاست</h1>
+      <p class="hero-sub">از پوشاک تا لوازم دیجیتال، با ارسال سریع و ضمانت بازگشت کالا.</p>
+    </div>
+    <div class="hero-shape" aria-hidden="true">
+      <svg viewBox="0 0 200 200" width="150" height="150">
+        <circle cx="100" cy="100" r="90" fill="#E8A33D" opacity="0.15"/>
+        <circle cx="100" cy="100" r="60" fill="#E8A33D" opacity="0.35"/>
+        <path d="M70 95h60l-6 45a8 8 0 0 1-8 7H84a8 8 0 0 1-8-7z" fill="#E8A33D"/>
+        <path d="M82 95v-8a18 18 0 0 1 36 0v8" stroke="#14213D" stroke-width="6" fill="none"/>
+      </svg>
+    </div>
+  </section>
 
-<div id="cartModal" class="cart-modal hidden">
-  <div class="cart-box">
-    <h3>سبد خرید</h3>
-    <div id="cartItems"></div>
-    <div class="cart-total">جمع کل: <span id="cartTotal">0</span> تومان</div>
-    <button class="checkout-btn">ثبت سفارش</button>
-    <button id="closeCart" class="close-btn">بستن</button>
-  </div>
-</div>
+  <section class="products-section">
+    <div class="section-head">
+      <h2 id="sectionTitle">پیشنهاد امروز</h2>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+    <p class="empty-state" id="emptyState" hidden>چیزی با این مشخصات پیدا نشد. جست‌وجوی دیگه‌ای امتحان کن.</p>
+  </section>
+</main>
 
-<footer class="footer">
-  <p>© ۱۴۰۴ فروشگاه من - تمامی حقوق محفوظ است</p>
+<footer class="site-footer">
+  <p>بازارچه — یک فروشگاه نمونه، ساخته‌شده برای شروع سریع.</p>
 </footer>
 
+<!-- سبد خرید -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <h3>سبد خرید</h3>
+    <button class="icon-btn" id="closeCart" aria-label="بستن">
+      <svg viewBox="0 0 24 24" width="20" height="20"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span>جمع کل</span>
+      <strong id="cartTotal">۰ تومان</strong>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn">ادامه فرایند خرید</button>
+  </div>
+</aside>
+
+<!-- نصب PWA -->
+<div class="install-toast" id="installToast">
+  <span>بازارچه رو مثل یک اپ روی گوشیت نصب کن</span>
+  <button id="installBtn">نصب</button>
+  <button id="dismissInstall" aria-label="بستن">✕</button>
+</div>
+
 <script src="script.js"></script>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
-}
-</script>
 </body>
 </html>
