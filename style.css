@@ -1,82 +1,25 @@
-:root{
-  --navy:#14213D;
-  --navy-soft:#1F2E52;
-  --amber:#E8A33D;
-  --amber-deep:#C9822A;
-  --cream:#FBF8F3;
-  --ink:#1B1B1F;
-  --muted:#6B7280;
-  --line:#E7E2D8;
-  --radius:14px;
-  --safe-top:env(safe-area-inset-top, 0px);
-  --safe-bottom:env(safe-area-inset-bottom, 0px);
+* { box-sizing: border-box; margin: 0; }
+body { font-family: Tahoma, sans-serif; background: #f5f5f5; }
+header {
+  background: #0d9488; color: #fff; padding: 12px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  position: sticky; top: 0;
 }
-*{box-sizing:border-box}
-html{scroll-padding-top:var(--safe-top)}
-body{
-  margin:0;
-  font-family:'Vazirmatn', Tahoma, sans-serif;
-  background:var(--cream);
-  color:var(--ink);
-  padding-bottom:calc(24px + var(--safe-bottom));
+nav { display: flex; gap: 8px; overflow-x: auto; padding: 10px; }
+nav button {
+  white-space: nowrap; padding: 8px 14px; border: 0;
+  border-radius: 20px; background: #fff;
 }
-img,svg{max-width:100%}
-
-/* هدر */
-.site-header{
-  background:var(--navy);
-  color:#fff;
-  padding-top:var(--safe-top);
-  position:sticky;
-  top:0;
-  z-index:20;
+#products {
+  display: grid; gap: 12px; padding: 12px;
+  grid-template-columns: repeat(2, 1fr);
 }
-.header-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:14px 18px 8px;
+@media (min-width: 768px) {
+  #products { grid-template-columns: repeat(4, 1fr); }
 }
-.brand{
-  font-size:22px;
-  font-weight:800;
-  letter-spacing:.5px;
+.card { background: #fff; border-radius: 12px; padding: 10px; }
+.card img { width: 100%; border-radius: 8px; }
+.card button {
+  width: 100%; margin-top: 8px; padding: 10px;
+  background: #0d9488; color: #fff; border: 0; border-radius: 8px;
 }
-.brand span{color:var(--amber)}
-.icon-btn{
-  background:rgba(255,255,255,.08);
-  border:none;
-  color:#fff;
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  position:relative;
-}
-.icon-btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
-.cart-count{
-  position:absolute;
-  top:-4px;
-  left:-4px;
-  background:var(--amber);
-  color:var(--navy);
-  font-size:11px;
-  font-weight:700;
-  min-width:18px;
-  height:18px;
-  border-radius:9px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:0 4px;
-}
-.search-row{
-  margin:0 18px 16px;
-  background:rgba(255,255,255,.1);
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  gap:8px;
