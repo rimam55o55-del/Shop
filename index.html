@@ -4,22 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0d9488">
+  <meta name="description" content="فروشگاه لوازم آپارات، ابزارآلات و ادویه‌جات">
   <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="style.css">
-  <title>فروشگاه من</title>
+  <title>فروشگاه لوازم آپارات، ابزار و ادویه</title>
 </head>
 <body>
+
   <header>
-    <h1>فروشگاه من</h1>
-    <button id="cartBtn">🛒 <span id="cartCount">0</span></button>
+    <h1>🛠️ فروشگاه من</h1>
+    <button id="cartBtn" aria-label="سبد خرید">🛒 <span id="cartCount">0</span></button>
   </header>
+
+  <!-- سه بخش اصلی -->
+  <section class="sections" id="sections"></section>
+
+  <div class="search-box">
+    <input id="search" type="search" placeholder="جستجوی محصول...">
+  </div>
 
   <nav id="categories"></nav>
   <main id="products"></main>
+  <p id="empty" class="empty" hidden>محصولی پیدا نشد.</p>
 
-  <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-  </script>
+  <!-- سبد خرید -->
+  <div id="overlay" class="overlay" hidden></div>
+  <aside id="cartPanel" class="cart-panel">
+    <div class="cart-head">
+      <h2>سبد خرید</h2>
+      <button id="closeCart" aria-label="بستن">✕</button>
+    </div>
+    <div id="cartItems"></div>
+    <div class="cart-foot">
+      <div class="total">جمع کل: <b id="cartTotal">۰</b> تومان</div>
+      <input id="custName" placeholder="نام و نام خانوادگی">
+      <input id="custPhone" type="tel" placeholder="شماره موبایل">
+      <textarea id="custAddr" rows="2" placeholder="آدرس کامل"></textarea>
+      <button id="checkoutBtn" class="primary">ثبت سفارش در واتساپ</button>
+      <button id="clearBtn" class="ghost">خالی کردن سبد</button>
+    </div>
+  </aside>
+
+  <div id="toast" class="toast"></div>
+
+  <footer>
+    <p>© فروشگاه من — لوازم آپارات • ابزارآلات • ادویه‌جات</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
