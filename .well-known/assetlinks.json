@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "dev.workers.rimam55o55.shop.twa",
+      "sha256_cert_fingerprints": [
+        "3F:F1:B0:DC:B5:64:1C:D1:F6:64:BA:D2:65:56:BA:92:5A:CE:C0:A5:10:0C:1F:2E:ED:4D:ED:75:A9:59:D5:BA"
+      ]
+    }
+  }
+]
