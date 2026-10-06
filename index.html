@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0d9488">
   <meta name="description" content="فروشگاه لوازم آپارات، ابزارآلات و ادویه‌جات">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icons/icon-192.png">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <link rel="stylesheet" href="style.css">
   <title>فروشگاه لوازم آپارات، ابزار و ادویه</title>
 </head>
@@ -53,5 +53,15 @@
 
   <script src="products.js" charset="utf-8"></script>
   <script src="script.js" charset="utf-8"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/service-worker.js")
+          .then(function () { console.log("SW ok"); })
+          .catch(function (e) { console.log("SW error", e); });
+      });
+    }
+  </script>
 </body>
 </html>
