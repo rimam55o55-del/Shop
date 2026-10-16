@@ -149,3 +149,16 @@ renderCart();
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js").catch(() => {});
 }
+async function loadProducts() {
+  try {
+    const r = await fetch('/api/products', { cache: 'no-store' });
+    const data = await r.json();
+    if (Array.isArray(data) && data.length) return data;
+  } catch (e) {}
+  return products; // نسخه پشتیبان از products.js
+}
+
+// نمایش محصولات پس از بارگذاری
+loadProducts().then(list => {
+  renderProducts(list); // تابع نمایش فعلی خودتان را اینجا صدا بزنید
+});
