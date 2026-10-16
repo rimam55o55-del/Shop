@@ -1,38 +1,4 @@
-const CACHE = "shop-v3";
-
-const FILES = [
-  "./",
-  "./index.html",
-  "./style.css",
-  "./products.js",
-  "./script.js",
-  "./manifest.json"
-];
-
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(FILES))
-  );
-  self.skipWaiting();
-});
-
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(key => key !== CACHE).map(key => caches.delete(key))
-      )
-    )
-  );
-  self.clients.claim();
-});
-
-self.addEventListener("fetch", event => {
-  if (event.request.method !== "GET") return;
-  if (!event.request.url.startsWith(self.location.origin)) return;
-
-  event.respondWith(
-  const CACHE = "shop-v4";
+const CACHE = "shop-v5";
 
 const FILES = [
   "/",
@@ -75,6 +41,9 @@ self.addEventListener("fetch", event => {
   if (req.method !== "GET") return;
   if (!req.url.startsWith(self.location.origin)) return;
 
+  // درخواست‌های API همیشه از شبکه خوانده شوند تا قیمت‌ها تازه بمانند
+  if (new URL(req.url).pathname.startsWith("/api/")) return;
+
   event.respondWith(
     fetch(req)
       .then(response => {
@@ -90,13 +59,5 @@ self.addEventListener("fetch", event => {
           if (req.mode === "navigate") return caches.match("/");
         })
       )
-  );
-});  fetch(event.request)
-      .then(response => {
-        const copy = response.clone();
-        caches.open(CACHE).then(cache => cache.put(event.request, copy));
-        return response;
-      })
-      .catch(() => caches.match(event.request))
   );
 });

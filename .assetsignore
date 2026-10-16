@@ -1,0 +1,5 @@
+worker.js
+wrangler.jsonc
+.git
+.gitignore
+README.md

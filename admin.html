@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدیریت فروشگاه</title>
+<style>
+  body { font-family: Tahoma, sans-serif; margin: 0; padding: 12px; background: #f4f4f4; }
+  h3 { margin: 8px 0; }
+  .card { background: #fff; border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+  input, select { width: 100%; box-sizing: border-box; padding: 8px; margin: 4px 0; font-size: 16px; }
+  button { padding: 10px 14px; margin: 4px 0; font-size: 16px; border: 0; border-radius: 6px; cursor: pointer; }
+  .save { background: #1a7f37; color: #fff; width: 100%; }
+  .add { background: #0969da; color: #fff; width: 100%; }
+  .del { background: #cf222e; color: #fff; }
+  #msg { padding: 8px; text-align: center; }
+  .locked { display: none; }
+</style>
+</head>
+<body>
+
+<div id="loginBox">
+  <h3>ورود مدیریت</h3>
+  <input id="pass" type="password" placeholder="رمز مدیریت">
+  <button class="add" onclick="unlock()">ورود</button>
+  <div id="loginMsg"></div>
+</div>
+
+<div id="panel" class="locked">
+  <h3>مدیریت محصولات</h3>
+  <div id="list"></div>
+  <button class="add" onclick="addProduct()">+ افزودن محصول</button>
+  <button class="save" onclick="saveAll()">ذخیره همه تغییرات</button>
+  <div id="msg"></div>
+</div>
+
+<script>
+const CATEGORIES = ["لوازم آپارات", "ابزارآلات", "ادویه‌جات"];
+let products = [];
+let password = "";
+
+function esc(s) {
+  return String(s ?? "").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+}
+
+async function unlock() {
+  password = document.getElementById("pass").value;
+  await load();
+  if (products === null) {
+    document.getElementById("loginMsg").textContent = "خطا در اتصال به سرور";
+    return;
+  }
+  document.getElementById("loginBox").classList.add("locked");
+  document.getElementById("panel").classList.remove("locked");
+  render();
+}
+
+async function load() {
+  try {
+    const r = await fetch("/api/products", { cache: "no-store" });
+    const data = await r.json();
+    products = Array.isArray(data) ? data : [];
+  } catch (e) {
+    products = null;
+  }
+}
+
+function nextId() {
+  return products.reduce((m, p) => Math.max(m, Number(p.id) || 0), 0) + 1;
+}
+
+function render() {
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  products.forEach((p, i) => {
+    const opts = CATEGORIES.map(c =>
+      `<option value="${esc(c)}" ${p.cat === c ? "selected" : ""}>${c}</option>`
+    ).join("");
+    const d = document.createElement("div");
+    d.className = "card";
+    d.innerHTML = `
+      <input placeholder="نام محصول" value="${esc(p.name)}" oninput="products[${i}].name=this.value">
+      <input placeholder="قیمت (تومان)" type="number" value="${esc(p.price)}" oninput="products[${i}].price=Number(this.value)">
+      <select onchange="products[${i}].cat=this.value">${opts}</select>
+      <input placeholder="ایموجی (مثلاً 🔧)" value="${esc(p.emoji)}" oninput="products[${i}].emoji=this.value">
+      <button class="del" onclick="removeProduct(${i})">حذف</button>`;
+    list.appendChild(d);
+  });
+}
+
+function addProduct() {
+  products.push({ id: nextId(), name: "", price: 0, cat: CATEGORIES[0], emoji: "🛒" });
+  render();
+}
+
+function removeProduct(i) {
+  if (confirm("این محصول حذف شود؟")) { products.splice(i, 1); render(); }
+}
+
+async function saveAll() {
+  const msg = document.getElementById("msg");
+  msg.textContent = "در حال ذخیره...";
+  try {
+    const r = await fetch("/api/products", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Admin-Password": password,
+      },
+      body: JSON.stringify(products),
+    });
+    msg.textContent = r.ok ? "ذخیره شد ✔" : "رمز اشتباه است یا خطایی رخ داد";
+  } catch (e) {
+    msg.textContent = "خطا در اتصال به سرور";
+  }
+}
+</script>
+</body>
+</html>

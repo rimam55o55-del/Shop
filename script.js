@@ -1,6 +1,7 @@
 const $ = id => document.getElementById(id);
 const fmt = n => n.toLocaleString("fa-IR");
 
+let products = [];       // لیست فعال محصولات (از KV یا products.js)
 let cart = load("cart", {});
 let currentCat = "همه";
 let query = "";
@@ -13,6 +14,16 @@ function saveCart() {
   try { localStorage.setItem("cart", JSON.stringify(cart)); } catch (e) {}
 }
 
+/* ---------- بارگذاری محصولات ---------- */
+async function loadProducts() {
+  try {
+    const r = await fetch("/api/products", { cache: "no-store" });
+    const data = await r.json();
+    if (Array.isArray(data) && data.length) return data;
+  } catch (e) {}
+  return typeof FALLBACK_PRODUCTS !== "undefined" ? FALLBACK_PRODUCTS : [];
+}
+
 /* ---------- سه بخش اصلی ---------- */
 function renderSections() {
   $("sections").innerHTML = SECTIONS.map(s => `
@@ -22,7 +33,7 @@ function renderSections() {
     </button>`).join("");
 }
 
-/* ---------- دسته‌ها و محصولات ---------- */
+/* ---------- دسته‌ها ---------- */
 function renderCategories() {
   const cats = ["همه", ...SECTIONS.map(s => s.name)];
   $("categories").innerHTML = cats.map(c =>
@@ -30,6 +41,7 @@ function renderCategories() {
   ).join("");
 }
 
+/* ---------- محصولات ---------- */
 function renderProducts() {
   const list = products.filter(p =>
     (currentCat === "همه" || p.cat === currentCat) &&
@@ -38,7 +50,7 @@ function renderProducts() {
   $("empty").hidden = list.length > 0;
   $("products").innerHTML = list.map(p => `
     <div class="card">
-      <div class="emoji">${p.emoji}</div>
+      <div class="emoji">${p.emoji || "🛒"}</div>
       <h3>${p.name}</h3>
       <span class="cat">${p.cat}</span>
       <div class="price">${fmt(p.price)} تومان</div>
@@ -68,7 +80,7 @@ function renderCart() {
     if (!p) return "";
     return `
       <div class="item">
-        <div class="emoji">${p.emoji}</div>
+        <div class="emoji">${p.emoji || "🛒"}</div>
         <div class="info">${p.name}<b>${fmt(p.price * q)} تومان</b></div>
         <div class="qty">
           <button data-inc="${id}">+</button>
@@ -141,11 +153,11 @@ $("clearBtn").onclick = () => { cart = {}; saveCart(); renderCart(); };
 $("search").oninput = e => { query = e.target.value.trim(); renderProducts(); };
 
 /* ---------- شروع ---------- */
-renderSections();
-renderCategories();
-renderProducts();
-renderCart();
-
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js").catch(() => {});
+async function init() {
+  products = await loadProducts();
+  renderSections();
+  renderCategories();
+  renderProducts();
+  renderCart();
 }
+init();
