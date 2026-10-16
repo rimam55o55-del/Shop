@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدیریت فروشگاه</title>
+<style>
+  body { font-family: sans-serif; margin: 0; padding: 12px; background: #f4f4f4; }
+  .card { background: #fff; border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+  input { width: 100%; box-sizing: border-box; padding: 8px; margin: 4px 0; font-size: 16px; }
+  button { padding: 10px 14px; margin: 4px 0; font-size: 16px; border: 0; border-radius: 6px; }
+  .save { background: #1a7f37; color: #fff; width: 100%; }
+  .add { background: #0969da; color: #fff; width: 100%; }
+  .del { background: #cf222e; color: #fff; }
+  #msg { padding: 8px; text-align: center; }
+</style>
+</head>
+<body>
+<h3>مدیریت محصولات</h3>
+<input id="pass" type="password" placeholder="رمز مدیریت">
+<div id="list"></div>
+<button class="add" onclick="addProduct()">+ افزودن محصول</button>
+<button class="save" onclick="saveAll()">ذخیره همه تغییرات</button>
+<div id="msg"></div>
+
+<script>
+let products = [];
+
+async function load() {
+  const r = await fetch('/api/products', { cache: 'no-store' });
+  const data = await r.json();
+  products = Array.isArray(data) ? data : [];
+  render();
+}
+
+function render() {
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  products.forEach((p, i) => {
+    const d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = `
+      <input placeholder="نام محصول" value="${p.name || ''}" oninput="products[${i}].name=this.value">
+      <input placeholder="قیمت (تومان)" type="number" value="${p.price || ''}" oninput="products[${i}].price=Number(this.value)">
+      <input placeholder="دسته (آپارات / ابزارآلات / ادویه)" value="${p.category || ''}" oninput="products[${i}].category=this.value">
+      <input placeholder="آدرس تصویر" value="${p.image || ''}" oninput="products[${i}].image=this.value">
+      <button class="del" onclick="removeProduct(${i})">حذف</button>`;
+    list.appendChild(d);
+  });
+}
+
+function addProduct() {
+  products.push({ id: Date.now(), name: '', price: 0, category: '', image: '' });
+  render();
+}
+
+function removeProduct(i) {
+  if (confirm('این محصول حذف شود؟')) { products.splice(i, 1); render(); }
+}
+
+async function saveAll() {
+  const msg = document.getElementById('msg');
+  msg.textContent = 'در حال ذخیره...';
+  const r = await fetch('/api/products', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Password': document.getElementById('pass').value,
+    },
+    body: JSON.stringify(products),
+  });
+  msg.textContent = r.ok ? 'ذخیره شد ✔' : 'رمز اشتباه است یا خطایی رخ داد';
+}
+
+load();
+</script>
+</body>
+</html>
